@@ -38,7 +38,7 @@ echo "pts/2" >> /etc/securetty
 echo "pts/3" >> /etc/securetty
 echo "pts/4" >> /etc/securetty
 
-#pam_securetty.so
+#pam_securetty.so 수정하는중
 
 
 echo "U-02) 패스워드 복잡성 설정 cat / /etc/security/pwquality.conf 확인" 

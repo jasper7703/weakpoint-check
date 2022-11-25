@@ -1,5 +1,4 @@
 #!/bin/bash
-#tes commit
 #################################################################################
 #                                                                               #
 #   Program Name : Security Check for LINUX for Ubuntu                          #
@@ -81,11 +80,11 @@ echo "U-03) 계정잠금 임계값 설정 cat /etc/pam.d/password-auth-ac system
 #perl -p -i -e '$.==16 and print "account required pam_tally2.so\n"' /etc/pam.d/password-auth-ac
 #perl -p -i -e '$.==9 and print "auth required pam_tally2.so deny=5 unlock_time=120\n"' /etc/pam.d/system-auth-ac
 #perl -p -i -e '$.==16 and print "account required pam_tally2.so\n"' /etc/pam.d/system-auth-ac
-if [ -f /etc/pam.d/system-auth ]
+if [ -f /etc/pam.d/common-auth ]
 	then
-	if [ `cat /etc/*-release | uniq | grep -E 'release 5|release 6' | wc -l` -gt 0 ]
+	if [ `cat /etc/issue | uniq | grep -E 'Uunbtu 14.04' | wc -l` -gt 0 ]
 		then
-		echo "CentOS 5 또는 6 버젼 쉘 실행"
+		echo "Ubuntu 14.04 LTS 버젼 쉘 실행"
 		 sed -i 's/auth.*required.*\/lib\/security\/pam_tally.so.*/auth 	required 	\/lib\/security\/pam_tally.so deny=5 unlock_time=120 no_magic_root/g' /etc/pam.d/system-auth
 		 sed -i 's/account.*required.*\/lib\/security\/pam_tally.so.*/account 	required 	\/lib\/security\/pam_tally.so no_magic_root reset/g' /etc/pam.d/system-auth
 		if [ `cat /etc/pam.d/system-auth | grep -E "pam_tally" | wc -l` -lt 1 ]
@@ -94,13 +93,13 @@ if [ -f /etc/pam.d/system-auth ]
 		   echo "account 	required 	/lib/security/pam_tally.so no_magic_root reset" >> /etc/pam.d/system-auth
 		fi 
 	else
-		echo "CentOS 7 이상 버젼 쉘 실행"
-		 sed -i 's/auth.*required.*pam_tally2.so.*/auth 	required 	pam_tally2.so deny=5 unlock_time=120 no_magic_root/g' /etc/pam.d/system-auth
-		 sed -i 's/account.*required.*pam_tally2.so.*/account 	required 	pam_tally2.so no_magic_root reset/g' /etc/pam.d/system-auth
-		if [ `cat /etc/pam.d/system-auth | grep -E "pam_tally" | wc -l` -lt 1 ]
+		echo "18.04 LTS 20.04 LTS 이상 버젼 쉘 실행"
+		 sed -i 's/auth.*required.*pam_tally2.so.*/auth 	required 	pam_tally2.so onerr=fail even_deny_root deny=5 unlock_time=120/g' /etc/pam.d/common-auth
+		 sed -i 's/account.*required.*pam_tally2.so.*/account 	required 	pam_tally2.so/g' /etc/pam.d/common-auth
+		if [ `cat /etc/pam.d/common-auth | grep -E "pam_tally" | wc -l` -lt 1 ]
 		  then
-		   echo "auth 	required 	pam_tally2.so deny=5 unlock_time=120 no_magic_root" >> /etc/pam.d/system-auth
-		   echo "account 	required 	pam_tally2.so no_magic_root reset" >> /etc/pam.d/system-auth
+		   echo "auth 	required 	pam_tally2.so onerr=fail even_deny_root deny=5 unlock_time=120" >> /etc/pam.d/common-auth
+		   echo "account 	required 	pam_tally2.so" >> /etc/pam.d/common-auth
 		fi 
 	fi
 fi

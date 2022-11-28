@@ -113,8 +113,9 @@ if [ -f /etc/pam.d/password-auth ]
 		 echo "account 	required 	pam_tally2.so no_magic_root reset" >> /etc/pam.d/password-auth
 		fi
 fi
-cat /etc/pam.d/password-auth-ac | grep pam_tally2.so
-cat /etc/pam.d/system-auth-ac | grep pam_tally2.so
+#cat /etc/pam.d/password-auth-ac | grep pam_tally2.so
+#cat /etc/pam.d/system-auth-ac | grep pam_tally2.so
+cat /etc/pam.d/password-auth | grep pam_tally2.so
 
 echo "U-04) 패스워드 파일 보호 cat /etc/shadow"
 pwconv
